@@ -37,13 +37,45 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     // await client.connect();
 
-    const database = client.db('RateMyProjectDB');
-    const projectCollection = database.collection('projectCollection');
-    const submittedProjectCollection = database.collection(
-      'submittedProjectCollection'
-    );
+    const database = client.db('FitnessTrackerDB');
+    const trainerCollection = database.collection('trainerCollection');
+    const bookingCollection = database.collection('bookingCollection');
+    const newsletterCollection = database.collection('newsletterCollection');
 
+    // add newsletter
+    app.post('new-letter', async (req, res) => {
+      const newsletterInfo = req?.body;
+      const result = await newsletterCollection.insertOne(newsletterInfo);
+      res.send(result);
+    });
 
+    // get all newsletter
+    app.get('new-letter', async (req, res) => {
+      const cursor = newsletterCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
+    // add new trainer api (Be a trainer)
+    app.post('new-trainer', async (req, res) => {
+      const trainerInfo = req?.body;
+      const result = await trainerCollection.insertOne(trainerInfo);
+      res.send(result);
+    });
+
+    // get all trainer profile info
+    app.get('trainer', async (req, res) => {
+      const cursor = trainerCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
+    // trainer slot booking
+    app.post('trainer-booking', async (req, res) => {
+      const bookingInfo = req?.body;
+      const result = await bookingCollection.insertOne(bookingInfo);
+      res.send(result);
+    });
 
     // Send a ping to confirm a successful connection
     await client.db('admin').command({ ping: 1 });
