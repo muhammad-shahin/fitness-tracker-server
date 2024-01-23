@@ -43,20 +43,20 @@ async function run() {
     const newsletterCollection = database.collection('newsletterCollection');
 
     // add newsletter
-    app.post('new-letter', async (req, res) => {
+    app.post('newsletter', async (req, res) => {
       const newsletterInfo = req?.body;
       const result = await newsletterCollection.insertOne(newsletterInfo);
       res.send(result);
     });
 
     // get all newsletter
-    app.get('new-letter', async (req, res) => {
+    app.get('newsletter', async (req, res) => {
       const cursor = newsletterCollection.find();
       const result = await cursor.toArray();
       res.send(result);
     });
 
-    // add new trainer api (Be a trainer)
+    // add new trainer api (Be a trainer request)
     app.post('new-trainer', async (req, res) => {
       const trainerInfo = req?.body;
       const result = await trainerCollection.insertOne(trainerInfo);
@@ -74,6 +74,13 @@ async function run() {
     app.post('trainer-booking', async (req, res) => {
       const bookingInfo = req?.body;
       const result = await bookingCollection.insertOne(bookingInfo);
+      res.send(result);
+    });
+
+    // get all trainer booked slot
+    app.get('booked-trainer', async (req, res) => {
+      const cursor = trainerCollection.find();
+      const result = await cursor.toArray();
       res.send(result);
     });
 
